@@ -1,0 +1,8 @@
+model\Aeropuerto.class
+model\Vuelo.class
+com\mycompany\proyectoestructuas\ProyectoEstructuas.class
+model\Edge.class
+model\Ruta.class
+model\GraphAL.class
+model\Vertex.class
+model\Aerolinea.class
