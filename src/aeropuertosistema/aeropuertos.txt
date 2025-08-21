@@ -1,0 +1,11 @@
+codigo,nombre,ciudad,pais
+PKX,Aeropuerto Internacional de Daxing,Beijing,China
+JFK,John F. Kennedy International Airport,New York,USA
+LHR,London Heathrow Airport,London,UK
+CDG,Paris Charles de Gaulle Airport,Paris,France
+DXB,Dubai International Airport,Dubai,UAE
+SIN,Singapore Changi Airport,Singapore,Singapore
+ICN,Incheon International Airport,Seoul,South Korea
+FRA,Frankfurt am Main Airport,Frankfurt,Germany
+AMS,Amsterdam Airport Schiphol,Amsterdam,Netherlands
+MAD,Adolfo Suárez Madrid–Barajas Airport,Madrid,Spain
