@@ -1,11 +1,12 @@
 codigo,nombre,ciudad,pais
-PKX,Aeropuerto Internacional de Daxing,Beijing,China
-JFK,John F. Kennedy International Airport,New York,USA
-LHR,London Heathrow Airport,London,UK
-CDG,Paris Charles de Gaulle Airport,Paris,France
-DXB,Dubai International Airport,Dubai,UAE
-SIN,Singapore Changi Airport,Singapore,Singapore
-ICN,Incheon International Airport,Seoul,South Korea
-FRA,Frankfurt am Main Airport,Frankfurt,Germany
-AMS,Amsterdam Airport Schiphol,Amsterdam,Netherlands
-MAD,Adolfo Suárez Madrid–Barajas Airport,Madrid,Spain
+PEK,Aeropuerto Internacional de Beijing Capital,Beijing,China
+PVG,Aeropuerto Internacional de Shanghai Pudong,Shanghai,China
+CAN,Aeropuerto Internacional de Guangzhou Baiyun,Guangzhou,China
+SZX,Aeropuerto Internacional de Shenzhen Bao'an,Shenzhen,China
+CTU,Aeropuerto Internacional de Chengdu Shuangliu,Chengdu,China
+KMG,Aeropuerto Internacional de Kunming Changshui,Kunming,China
+XIY,Aeropuerto Internacional de Xi'an Xianyang,Xi'an,China
+TAO,Aeropuerto Internacional de Qingdao Jiaodong,Qingdao,China
+CKG,Aeropuerto Internacional de Chongqing Jiangbei,Chongqing,China
+NNG,Aeropuerto Internacional de Nanning Wuxu,Nanning,China
+HAK,Aeropuerto Internacional de Haikou Meilan,Haikou,China

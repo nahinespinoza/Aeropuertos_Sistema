@@ -4,12 +4,15 @@
  */
 package aeropuertosistema;
 
+import java.util.Objects;
+
 /**
  *
  * @author LENOVO
  */
 public class Aeropuerto {
-        private String name;
+
+    private String name;
     private String city;
     private String country;
     private String code;
@@ -52,5 +55,22 @@ public class Aeropuerto {
         this.country = country;
         this.code = code;
     }
-   
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        Aeropuerto that = (Aeropuerto) obj;
+        return code.equals(that.code); // Compara solo por código
+    }
+
+    @Override
+    public int hashCode() {
+        return code.hashCode(); // Debe ser consistente con equals
+    }
+
 }

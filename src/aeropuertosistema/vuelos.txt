@@ -1,0 +1,110 @@
+PEK,PVG,China Eastern Airlines,MU5101,1200
+PEK,CAN,China Southern Airlines,CZ3101,1960
+PEK,SZX,Shenzhen Airlines,ZH9110,1960
+PEK,CTU,Sichuan Airlines,3U8888,1550
+PEK,KMG,China Eastern Airlines,MU5701,2100
+PEK,XIY,China Eastern Airlines,MU2101,950
+PEK,TAO,Shandong Airlines,SC4656,550
+PEK,CKG,Sichuan Airlines,3U8830,1450
+PEK,NNG,Shenzhen Airlines,ZH9356,1850
+PEK,HAK,Hainan Airlines,HU7281,2300
+PVG,PEK,China Eastern Airlines,MU5102,1200
+PVG,CAN,China Southern Airlines,CZ3596,1250
+PVG,SZX,Shenzhen Airlines,ZH9518,1250
+PVG,CTU,Sichuan Airlines,3U8966,1750
+PVG,KMG,China Eastern Airlines,MU5814,1950
+PVG,XIY,China Eastern Airlines,MU2153,1350
+PVG,TAO,China Eastern Airlines,MU5523,800
+PVG,CKG,Sichuan Airlines,3U8972,1550
+PVG,NNG,China Eastern Airlines,MU6375,1600
+PVG,HAK,Hainan Airlines,HU7123,1850
+CAN,PEK,China Southern Airlines,CZ3102,1960
+CAN,PVG,China Southern Airlines,CZ3595,1250
+CAN,SZX,China Southern Airlines,CZ3156,350
+CAN,CTU,Sichuan Airlines,3U8734,1250
+CAN,KMG,China Southern Airlines,CZ3409,1150
+CAN,XIY,China Southern Airlines,CZ3215,1450
+CAN,TAO,China Southern Airlines,CZ3579,1650
+CAN,CKG,Sichuan Airlines,3U8740,950
+CAN,NNG,China Southern Airlines,CZ3297,550
+CAN,HAK,Hainan Airlines,HU7001,500
+SZX,PEK,Shenzhen Airlines,ZH9109,1960
+SZX,PVG,Shenzhen Airlines,ZH9517,1250
+SZX,CAN,China Southern Airlines,CZ3155,350
+SZX,CTU,Shenzhen Airlines,ZH9976,1450
+SZX,KMG,Shenzhen Airlines,ZH9436,1250
+SZX,XIY,Shenzhen Airlines,ZH9216,1550
+SZX,TAO,Shenzhen Airlines,ZH9928,1650
+SZX,CKG,Sichuan Airlines,3U8792,1150
+SZX,NNG,Shenzhen Airlines,ZH9354,750
+SZX,HAK,Hainan Airlines,HU7061,550
+CTU,PEK,Sichuan Airlines,3U8887,1550
+CTU,PVG,Sichuan Airlines,3U8965,1750
+CTU,CAN,Sichuan Airlines,3U8733,1250
+CTU,SZX,Shenzhen Airlines,ZH9975,1450
+CTU,KMG,Sichuan Airlines,3U8667,650
+CTU,XIY,Sichuan Airlines,3U8957,750
+CTU,TAO,Sichuan Airlines,3U8811,1550
+CTU,CKG,Sichuan Airlines,3U8001,300
+CTU,NNG,Sichuan Airlines,3U8765,950
+CTU,HAK,Sichuan Airlines,3U8357,1350
+KMG,PEK,China Eastern Airlines,MU5702,2100
+KMG,PVG,China Eastern Airlines,MU5813,1950
+KMG,CAN,China Southern Airlines,CZ3410,1150
+KMG,SZX,Shenzhen Airlines,ZH9435,1250
+KMG,CTU,Sichuan Airlines,3U8668,650
+KMG,XIY,China Eastern Airlines,MU5733,1350
+KMG,TAO,China Eastern Airlines,MU5755,2050
+KMG,CKG,Sichuan Airlines,3U8673,550
+KMG,NNG,China Eastern Airlines,MU5767,750
+KMG,HAK,Hainan Airlines,HU7163,1050
+XIY,PEK,China Eastern Airlines,MU2102,950
+XIY,PVG,China Eastern Airlines,MU2154,1350
+XIY,CAN,China Southern Airlines,CZ3216,1450
+XIY,SZX,Shenzhen Airlines,ZH9215,1550
+XIY,CTU,Sichuan Airlines,3U8958,750
+XIY,KMG,China Eastern Airlines,MU5734,1350
+XIY,TAO,China Eastern Airlines,MU5537,950
+XIY,CKG,Sichuan Airlines,3U8912,750
+XIY,NNG,China Eastern Airlines,MU6373,1450
+XIY,HAK,Hainan Airlines,HU7865,1850
+TAO,PEK,Shandong Airlines,SC4655,550
+TAO,PVG,China Eastern Airlines,MU5524,800
+TAO,CAN,China Southern Airlines,CZ3580,1650
+TAO,SZX,Shenzhen Airlines,ZH9927,1650
+TAO,CTU,Sichuan Airlines,3U8812,1550
+TAO,KMG,China Eastern Airlines,MU5756,2050
+TAO,XIY,China Eastern Airlines,MU5538,950
+TAO,CKG,Sichuan Airlines,3U8824,1450
+TAO,NNG,Shandong Airlines,SC4803,1950
+TAO,HAK,Hainan Airlines,HU7365,2250
+CKG,PEK,Sichuan Airlines,3U8829,1450
+CKG,PVG,Sichuan Airlines,3U8971,1550
+CKG,CAN,Sichuan Airlines,3U8739,950
+CKG,SZX,Sichuan Airlines,3U8791,1150
+CKG,CTU,Sichuan Airlines,3U8002,300
+CKG,KMG,Sichuan Airlines,3U8674,550
+CKG,XIY,Sichuan Airlines,3U8911,750
+CKG,TAO,Sichuan Airlines,3U8823,1450
+CKG,NNG,Sichuan Airlines,3U8775,850
+CKG,HAK,Sichuan Airlines,3U8369,1150
+NNG,PEK,Shenzhen Airlines,ZH9355,1850
+NNG,PVG,China Eastern Airlines,MU6376,1600
+NNG,CAN,China Southern Airlines,CZ3298,550
+NNG,SZX,Shenzhen Airlines,ZH9353,750
+NNG,CTU,Sichuan Airlines,3U8766,950
+NNG,KMG,China Eastern Airlines,MU5768,750
+NNG,XIY,China Eastern Airlines,MU6374,1450
+NNG,TAO,Shandong Airlines,SC4804,1950
+NNG,CKG,Sichuan Airlines,3U8776,850
+NNG,HAK,Hainan Airlines,HU7265,450
+HAK,PEK,Hainan Airlines,HU7282,2300
+HAK,PVG,Hainan Airlines,HU7124,1850
+HAK,CAN,Hainan Airlines,HU7002,500
+HAK,SZX,Hainan Airlines,HU7062,550
+HAK,CTU,Sichuan Airlines,3U8358,1350
+HAK,KMG,Hainan Airlines,HU7164,1050
+HAK,XIY,Hainan Airlines,HU7866,1850
+HAK,TAO,Hainan Airlines,HU7366,2250
+HAK,CKG,Sichuan Airlines,3U8370,1150
+HAK,NNG,Hainan Airlines,HU7266,450

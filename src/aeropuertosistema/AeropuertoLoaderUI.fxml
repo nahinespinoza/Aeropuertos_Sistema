@@ -5,49 +5,80 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
 <VBox fx:id="root" spacing="10.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="aeropuertosistema.AeropuertoLoaderController">
-   <padding>
-      <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
-   </padding>
-   <style>
+    <padding>
+        <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+    </padding>
+    <style>
         -fx-background-color: #f4f4f4;
     </style>
    
-   <Label text="Sistema de Gestión de Aeropuertos - Aeropuerto Daxing" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;">
-      <font>
-         <Font name="System Bold" size="18.0" />
-      </font>
-   </Label>
+    <Label text="Sistema de Gestión de Aeropuertos - Aeropuerto Daxing" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;">
+        <font>
+            <Font name="System Bold" size="18.0" />
+        </font>
+    </Label>
    
-   <Label text="Seleccione un archivo TXT con datos de aeropuertos. El formato debe ser: código,nombre,ciudad,país" wrapText="true" style="-fx-text-fill: #7f8c8d;">
-      <VBox.margin>
-         <Insets bottom="10.0" />
-      </VBox.margin>
-   </Label>
+    <Label text="Seleccione un archivo TXT con datos de aeropuertos. El formato debe ser: código,nombre,ciudad,país" wrapText="true" style="-fx-text-fill: #7f8c8d;">
+        <VBox.margin>
+            <Insets bottom="10.0" />
+        </VBox.margin>
+    </Label>
    
-   <HBox spacing="10.0">
-      <Button fx:id="loadButton" mnemonicParsing="false" text="Cargar Aeropuertos desde Archivo" style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-weight: bold;" />
-      <Button fx:id="displayButton" mnemonicParsing="false" text="Mostrar Aeropuertos Cargados" style="-fx-background-color: #2ecc71; -fx-text-fill: white; -fx-font-weight: bold;" disable="true" />
-      <Button fx:id="clearButton" mnemonicParsing="false" text="Limpiar" style="-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-font-weight: bold;" />
-   </HBox>
+    <HBox spacing="10.0">
+        <Button fx:id="loadButton" mnemonicParsing="false" text="Cargar Aeropuertos desde Archivo" style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-weight: bold;" />
+        <Button fx:id="displayButton" mnemonicParsing="false" text="Mostrar Aeropuertos Cargados" style="-fx-background-color: #2ecc71; -fx-text-fill: white; -fx-font-weight: bold;" disable="true" />
+        <Button fx:id="clearButton" mnemonicParsing="false" text="Limpiar" style="-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-font-weight: bold;" />
+    </HBox>
    
-   <Label text="Información de Aeropuertos:" style="-fx-font-weight: bold;">
-      <VBox.margin>
-         <Insets top="15.0" />
-      </VBox.margin>
-   </Label>
+    <Label text="Visualización del Grafo de Vuelos:" style="-fx-font-weight: bold;">
+        <VBox.margin>
+            <Insets top="20.0" />
+        </VBox.margin>
+    </Label>
    
-   <ScrollPane fitToWidth="true">
-      <TextArea fx:id="outputArea" editable="false" prefHeight="400.0" style="-fx-font-family: 'Monospaced'; -fx-font-size: 12px;" />
-   </ScrollPane>
+    <BorderPane fx:id="graphContainer" prefHeight="400.0" prefWidth="600.0">
+        <padding>
+            <Insets top="10.0" />
+        </padding>
+    </BorderPane>
    
-   <Label fx:id="statusLabel" text="Listo para cargar datos" style="-fx-text-fill: #27ae60;">
-      <VBox.margin>
-         <Insets top="10.0" />
-      </VBox.margin>
-   </Label>
+    <Label text="Información de Aeropuertos:" style="-fx-font-weight: bold;">
+        <VBox.margin>
+            <Insets top="15.0" />
+        </VBox.margin>
+    </Label>
+    <!-- NUEVA SECCIÓN PARA BOTONES DE VUELOS -->
+    <HBox spacing="10.0">
+        <Button fx:id="loadVuelosButton" mnemonicParsing="false" text="Cargar Vuelos desde Archivo" style="-fx-background-color: #9b59b6; -fx-text-fill: white; -fx-font-weight: bold;" disable="true" />
+        <Button fx:id="displayVuelosButton" mnemonicParsing="false" text="Mostrar Vuelos y Conexiones" style="-fx-background-color: #f39c12; -fx-text-fill: white; -fx-font-weight: bold;" disable="true" />
+        <Button fx:id="estadisticasButton" mnemonicParsing="false" text="Ver Estadísticas" style="-fx-background-color: #16a085; -fx-text-fill: white; -fx-font-weight: bold;" disable="true" />
+        <Button fx:id="viewGraphButton" mnemonicParsing="false" 
+                text="Visualización Completa del Grafo" 
+                style="-fx-background-color: #9c27b0; -fx-text-fill: white; -fx-font-weight: bold;"
+                onAction="#handleViewGraph"/>
+    </HBox>
+    
+   
+    <Label text="Información de Aeropuertos:" style="-fx-font-weight: bold;">
+        <VBox.margin>
+            <Insets top="15.0" />
+        </VBox.margin>
+    </Label>
+   
+    <ScrollPane fitToWidth="true">
+        <TextArea fx:id="outputArea" editable="false" prefHeight="400.0" style="-fx-font-family: 'Monospaced'; -fx-font-size: 12px;" />
+    </ScrollPane>
+   
+    <Label fx:id="statusLabel" text="Listo para cargar datos" style="-fx-text-fill: #27ae60;">
+        <VBox.margin>
+            <Insets top="10.0" />
+        </VBox.margin>
+    </Label>
+
 </VBox>
