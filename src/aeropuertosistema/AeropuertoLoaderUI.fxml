@@ -58,7 +58,11 @@
     <HBox spacing="10.0">
         <Button fx:id="addAirportButton" style="-fx-background-color: #27ae60; -fx-text-fill: white; -fx-font-weight: bold;" text="Añadir Aeropuerto" />
         <Button fx:id="deleteAirportButton" style="-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-font-weight: bold;" text="Eliminar Aeropuerto" />
+        <Button fx:id="airlineAnalysisButton" style="-fx-background-color: #9b59b6; -fx-text-fill: white; -fx-font-weight: bold;" text="Análisis de Aerolínea" />    
+                <ComboBox fx:id="airlineComboBox" promptText="Seleccione aerolínea" />
+
     </HBox>
+    
 
     <!-- NUEVO: ComboBox para seleccionar aeropuerto a eliminar -->
     <HBox spacing="10.0" alignment="CENTER_LEFT">
@@ -90,6 +94,7 @@
         <ComboBox fx:id="origenComboBox" prefWidth="200" promptText="Aeropuerto origen" />
         <ComboBox fx:id="destinoComboBox" prefWidth="200" promptText="Aeropuerto destino" />
         <Button fx:id="buscarRutaButton" style="-fx-background-color: #2980b9; -fx-text-fill: white; -fx-font-weight: bold;" text="Buscar Ruta Óptima" />
+        
     </HBox>
    
     <!-- Área de salida -->
@@ -108,5 +113,17 @@
             <Insets top="10.0" />
         </VBox.margin>
     </Label>
+    <!-- Sección para Exportación de Rutas -->
+    <Label style="-fx-font-weight: bold;" text="Exportación de Rutas:">
+        <VBox.margin>
+            <Insets top="15.0" />
+        </VBox.margin>
+    </Label>
+
+    <HBox spacing="10.0">
+        <Button fx:id="exportTXTButton" style="-fx-background-color: #7d3c98; -fx-text-fill: white; -fx-font-weight: bold;" text="Exportar TXT" />
+        <Button fx:id="exportCSVButton" style="-fx-background-color: #27ae60; -fx-text-fill: white; -fx-font-weight: bold;" text="Exportar CSV" />
+        <Button fx:id="exportHTMLButton" style="-fx-background-color: #e67e22; -fx-text-fill: white; -fx-font-weight: bold;" text="Exportar HTML" />
+    </HBox>
 
 </VBox>

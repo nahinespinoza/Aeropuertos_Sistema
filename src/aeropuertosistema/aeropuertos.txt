@@ -21,4 +21,4 @@ DEL,Aeropuerto Internacional Indira Gandhi,Delhi,India
 DXB,Aeropuerto Internacional de Dubai,Dubai,Emiratos Arabes Unidos
 GYQ,SIMON BOLIVAR,GUAYQUIL,ECUADOR
 
-QUT,AEROPUERTO DE QUITO,QUITO,ECUADOR
+

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane xmlns="http://javafx.com/javafx/11.0.1" 
+            xmlns:fx="http://javafx.com/fxml/1" 
+            fx:controller="aeropuertosistema.GraphViewController">
+    
+    <top>
+        <VBox spacing="10" style="-fx-background-color: #e3f2fd; -fx-padding: 10;">
+            <Label text="Visualización Completa del Grafo de Vuelos" 
+                   style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+            <Label text="Aeropuerto Internacional de Daxing (PKX) - Red de conexiones"/>
+            
+            <HBox spacing="10">
+                <Button fx:id="refreshButton" text="Actualizar Vista" 
+                       style="-fx-background-color: #2196f3; -fx-text-fill: white;"/>
+                <Button fx:id="closeButton" text="Cerrar" 
+                       style="-fx-background-color: #f44336; -fx-text-fill: white;"/>
+            </HBox>
+        </VBox>
+    </top>
+    
+    <center>
+        <BorderPane fx:id="graphContainer" 
+                   style="-fx-background-color: #fafafa;"
+                   prefWidth="1000" 
+                   prefHeight="700"/>
+    </center>
+    
+    <bottom>
+        <Label text="Haga clic en cualquier aeropuerto o vuelo para ver detalles" 
+               style="-fx-padding: 10; -fx-background-color: #eeeeee;"/>
+    </bottom>
+    
+</BorderPane>

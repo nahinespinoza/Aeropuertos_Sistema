@@ -13,13 +13,19 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.Comparator;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.Optional;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Modality;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.HBox;
 
 public class AeropuertoLoaderController {
 
@@ -76,9 +82,20 @@ public class AeropuertoLoaderController {
 
     @FXML
     private Button deleteFlightButton;
+    @FXML
+    private Button exportTXTButton;
 
     @FXML
+    private Button exportCSVButton;
+
+    @FXML
+    private Button exportHTMLButton;
+    @FXML
     private ComboBox<Aeropuerto> deleteAirportComboBox;
+    @FXML
+    private Button airlineAnalysisButton;
+    @FXML
+    private ComboBox<String> airlineComboBox;
 
     private GraphAL<Aeropuerto, Vuelo> grafo;
     private Stage primaryStage;
@@ -92,6 +109,11 @@ public class AeropuertoLoaderController {
         cargarDatos();
 
         // Configurar acciones de los botones
+        exportTXTButton.setOnAction(e -> handleExportTXT());
+
+        exportCSVButton.setOnAction(e -> handleExportCSV());
+        exportHTMLButton.setOnAction(e -> handleExportHTML());
+
         loadButton.setOnAction(e -> handleLoadAeropuertos());
         displayButton.setOnAction(e -> handleDisplayAeropuertos());
         clearButton.setOnAction(e -> handleClearOutput());
@@ -106,14 +128,17 @@ public class AeropuertoLoaderController {
         editFlightButton.setOnAction(e -> handleEditFlight());
         deleteFlightButton.setOnAction(e -> handleDeleteFlight());
         deleteAirportComboBox.setPromptText("Seleccione aeropuerto a eliminar");
+        airlineAnalysisButton.setOnAction(e -> handleAirlineAnalysis());
+        airlineComboBox.setPromptText("Seleccione aerolínea");
 
         statusLabel.setText("Listo para cargar datos");
         statusLabel.setStyle("-fx-text-fill: #27ae60;");
 
         // Inicialmente deshabilitar botones de vuelos hasta que haya aeropuertos
-        loadVuelosButton.setDisable(true);
-        displayVuelosButton.setDisable(true);
-        estadisticasButton.setDisable(true);
+        loadVuelosButton.setDisable(false);
+        displayVuelosButton.setDisable(false);
+        estadisticasButton.setDisable(false);
+
     }
 
     private void cargarDatos() {
@@ -129,12 +154,13 @@ public class AeropuertoLoaderController {
             // Cargar vuelos
             grafo.loadVuelosFromTXT(rutaVuelos);
             outputArea.appendText("✓ Vuelos cargados automáticamente\n");
+            updateAirlineComboBox();
 
             // Habilitar funcionalidades
             displayButton.setDisable(false);
-            loadVuelosButton.setDisable(false);
-            displayVuelosButton.setDisable(false);
-            estadisticasButton.setDisable(false);
+            loadVuelosButton.setDisable(true);
+            displayVuelosButton.setDisable(true);
+            estadisticasButton.setDisable(true);
 
             // Actualizar comboboxes
             updateAirportComboBoxes();
@@ -446,7 +472,6 @@ public class AeropuertoLoaderController {
         deleteAirportComboBox.getItems().setAll(aeropuertos);
     }
 
-    // Nuevo método para buscar rutas (VERSIÓN CORREGIDA)
     @FXML
     private void handleBuscarRuta() {
         Aeropuerto origen = origenComboBox.getValue();
@@ -467,25 +492,29 @@ public class AeropuertoLoaderController {
 
         try {
             LinkedList<Aeropuerto> rutaOptima = grafo.findShortestPath(origen, destino);
+            int totalDistance = 0;
 
             if (rutaOptima.isEmpty()) {
                 outputArea.appendText("❌ No se encontró una ruta entre estos aeropuertos\n");
                 return;
             }
 
+            // Calcular distancia total
+            for (int i = 0; i < rutaOptima.size() - 1; i++) {
+                Aeropuerto actual = rutaOptima.get(i);
+                Aeropuerto siguiente = rutaOptima.get(i + 1);
+                totalDistance += grafo.getDistanceBetween(actual, siguiente);
+            }
+
             // Mostrar la ruta encontrada
             outputArea.appendText("✅ Ruta óptima encontrada:\n");
-            int totalDistance = 0;
-
             for (int i = 0; i < rutaOptima.size(); i++) {
                 Aeropuerto aeropuerto = rutaOptima.get(i);
                 outputArea.appendText("   " + aeropuerto.getCode() + " - " + aeropuerto.getName());
 
                 if (i < rutaOptima.size() - 1) {
-                    // Usar el método de GraphAL en lugar del método local
                     Aeropuerto next = rutaOptima.get(i + 1);
-                    int distancia = grafo.getDistanceBetween(aeropuerto, next); // ← CAMBIADO
-                    totalDistance += distancia;
+                    int distancia = grafo.getDistanceBetween(aeropuerto, next);
                     outputArea.appendText(" → " + distancia + "km\n");
                 } else {
                     outputArea.appendText("\n");
@@ -494,7 +523,17 @@ public class AeropuertoLoaderController {
 
             outputArea.appendText("📊 Distancia total: " + totalDistance + "km\n");
 
-            // Resaltar la ruta en la visualización (si está abierta)
+            // Exportar la ruta
+            boolean exportadoTXT = ExportManager.exportRutaToTXT(rutaOptima, totalDistance, origen, destino);
+            boolean exportadoCSV = ExportManager.exportRutaToCSV(rutaOptima, totalDistance, origen, destino);
+            boolean exportadoHTML = ExportManager.exportRutaToHTML(rutaOptima, totalDistance, origen, destino);
+
+            if (exportadoTXT && exportadoCSV && exportadoHTML) {
+                outputArea.appendText("📁 Ruta exportada en formatos: TXT, CSV, HTML\n");
+                outputArea.appendText("💾 Archivos guardados en la carpeta del proyecto\n");
+            }
+
+            // Resaltar la ruta en la visualización
             openGraphViewWithHighlightedPath(rutaOptima);
 
         } catch (Exception e) {
@@ -685,23 +724,22 @@ public class AeropuertoLoaderController {
         return grafo.connectComplete((Aeropuerto) source, (Aeropuerto) target, weight, (Vuelo) data);
     }
 
-    
-
     @FXML
     private void handleEditFlight() {
         try {
-            // Primero necesitamos seleccionar el vuelo a editar
-            Dialog<ButtonType> selectDialog = new Dialog<>();
-            selectDialog.setTitle("Seleccionar Vuelo a Editar");
-            selectDialog.setHeaderText("Seleccione el vuelo que desea editar");
-
+            // 1. Cargar diálogo de selección
             FXMLLoader selectLoader = new FXMLLoader(getClass().getResource("SelectFlightDialog.fxml"));
-            selectDialog.getDialogPane().setContent(selectLoader.load());
+            Parent selectContent = selectLoader.load();
 
             SelectFlightDialogController selectController = selectLoader.getController();
             selectController.setAirports(grafo.getAllAirports());
-            selectController.setGraph(grafo); // Pasar la referencia del grafo
+            selectController.setGraph(grafo);
 
+            // 2. Crear diálogo
+            Dialog<ButtonType> selectDialog = new Dialog<>();
+            selectDialog.setTitle("Seleccionar Vuelo a Editar");
+            selectDialog.setHeaderText("Seleccione el vuelo que desea editar");
+            selectDialog.getDialogPane().setContent(selectContent);
             selectDialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
 
             Optional<ButtonType> selectResult = selectDialog.showAndWait();
@@ -711,125 +749,123 @@ public class AeropuertoLoaderController {
                 Vuelo vueloSeleccionado = selectController.getVuelo();
 
                 if (origenSeleccionado == null || destinoSeleccionado == null || vueloSeleccionado == null) {
-                    showAlert("Error", "Seleccione origen, destino y vuelo específico");
+                    showAlert("Error", "Debe seleccionar origen, destino y vuelo específico");
                     return;
                 }
 
-                // Ahora mostrar el diálogo de edición
+                // Cargar diálogo de edición
+                FXMLLoader editLoader = new FXMLLoader(getClass().getResource("EditFlightDialog.fxml"));
                 Dialog<ButtonType> editDialog = new Dialog<>();
                 editDialog.setTitle("Editar Vuelo");
                 editDialog.setHeaderText("Edite los datos del vuelo");
-
-                FXMLLoader editLoader = new FXMLLoader(getClass().getResource("EditFlightDialog.fxml"));
                 editDialog.getDialogPane().setContent(editLoader.load());
 
                 EditFlightDialogController editController = editLoader.getController();
                 editController.setAirports(grafo.getAllAirports());
-                // Pasar el vuelo seleccionado para precargar datos
                 editController.loadFlightData(origenSeleccionado, destinoSeleccionado, vueloSeleccionado);
 
                 editDialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
 
                 Optional<ButtonType> editResult = editDialog.showAndWait();
                 if (editResult.isPresent() && editResult.get() == ButtonType.OK) {
-                    Aeropuerto nuevoOrigen = editController.getOrigen();
-                    Aeropuerto nuevoDestino = editController.getDestino();
-                    String airline = editController.getAirline();
-                    String flightNumber = editController.getFlightNumber();
-                    int distance = editController.getDistance();
-
-                    // Validar datos
-                    String validationMessage = editController.getValidationMessage();
-                    if (validationMessage != null) {
-                        showAlert("Error", validationMessage);
+                    // Validar datos editados
+                    if (!editController.isValid()) {
+                        showAlert("Error", editController.getValidationMessage());
                         return;
                     }
 
-                    // Crear nuevo vuelo
-                    Vuelo vueloEditado = new Vuelo(airline, flightNumber, (float) distance);
+                    // Obtener nuevos valores
+                    Aeropuerto nuevoOrigen = editController.getOrigen();
+                    Aeropuerto nuevoDestino = editController.getDestino();
+                    String nuevaAerolinea = editController.getAirline();
+                    String nuevoNumVuelo = editController.getFlightNumber();
+                    int nuevaDistancia = editController.getDistance();
 
-                    // Primero eliminar el vuelo existente del grafo usando el número de vuelo
-                    if (grafo.removeFlight(origenSeleccionado, destinoSeleccionado, vueloSeleccionado.getNum_vuelo())) {
-                        // Eliminar del archivo (necesitarás modificar FileManager también)
-                        if (FileManager.removeFlightFromFile(origenSeleccionado, destinoSeleccionado, vueloSeleccionado.getNum_vuelo())) {
-                            // Luego añadir el vuelo editado al grafo
-                            boolean exito = grafo.connectComplete(nuevoOrigen, nuevoDestino, distance, vueloEditado);
+                    // Verificar si cambió el origen/destino (necesita eliminar y recrear)
+                    if (!origenSeleccionado.equals(nuevoOrigen) || !destinoSeleccionado.equals(nuevoDestino)) {
+                        // Eliminar vuelo antiguo
+                        grafo.removeFlight(origenSeleccionado, destinoSeleccionado, vueloSeleccionado.getNum_vuelo());
 
-                            if (exito) {
-                                // Añadir al archivo
-                                if (FileManager.addFlightToFile(nuevoOrigen, nuevoDestino, vueloEditado)) {
-                                    outputArea.appendText("✓ Vuelo editado: " + nuevoOrigen.getCode() + " → "
-                                            + nuevoDestino.getCode() + " | " + airline + " " + flightNumber + "\n");
-                                    updateAirportComboBoxes();
-                                } else {
-                                    showAlert("Error", "Vuelo editado en el grafo pero no se pudo guardar en el archivo");
-                                }
-                            } else {
-                                showAlert("Error", "No se pudo editar el vuelo");
-                                // Revertir: volver a añadir el vuelo original
-                                grafo.connectComplete(origenSeleccionado, destinoSeleccionado,
-                                        vueloSeleccionado.getDistance().intValue(), vueloSeleccionado);
-                                FileManager.addFlightToFile(origenSeleccionado, destinoSeleccionado, vueloSeleccionado);
-                            }
-                        } else {
-                            showAlert("Error", "No se pudo eliminar el vuelo del archivo");
-                            // Revertir: volver a añadir el vuelo original al grafo
-                            grafo.connectComplete(origenSeleccionado, destinoSeleccionado,
-                                    vueloSeleccionado.getDistance().intValue(), vueloSeleccionado);
-                        }
+                        // Crear nuevo vuelo
+                        Vuelo vueloEditado = new Vuelo(nuevaAerolinea, nuevoNumVuelo, (float) nuevaDistancia);
+
+                        // Añadir nueva conexión
+                        grafo.connectComplete(nuevoOrigen, nuevoDestino, nuevaDistancia, vueloEditado);
+
+                        // Actualizar archivos
+                        FileManager.removeFlightFromFile(origenSeleccionado, destinoSeleccionado, vueloSeleccionado.getNum_vuelo());
+                        FileManager.addFlightToFile(nuevoOrigen, nuevoDestino, vueloEditado);
+
                     } else {
-                        showAlert("Error", "No se pudo encontrar el vuelo para editar");
+                        // Solo actualizar datos del vuelo (mismo origen y destino)
+                        Vuelo vueloEditado = new Vuelo(nuevaAerolinea, nuevoNumVuelo, (float) nuevaDistancia);
+
+                        // Necesitas implementar este método en GraphAL
+                        grafo.updateFlightData(origenSeleccionado, destinoSeleccionado,
+                                vueloSeleccionado.getNum_vuelo(), vueloEditado);
+
+                        // Actualizar archivo
+                        FileManager.updateFlightInFile(origenSeleccionado, destinoSeleccionado,
+                                vueloSeleccionado.getNum_vuelo(), vueloEditado);
                     }
+
+                    outputArea.appendText("✓ Vuelo editado exitosamente: " + nuevaAerolinea + " " + nuevoNumVuelo + "\n");
+                }
+            }
+
+        } catch (IOException e) {
+            showAlert("Error", "No se pudo cargar el diálogo: " + e.getMessage());
+            e.printStackTrace();
+        } catch (Exception e) {
+            showAlert("Error", "Error al editar el vuelo: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void handleDeleteFlight() {
+        try {
+            Dialog<ButtonType> dialog = new Dialog<>();
+            dialog.setTitle("Eliminar Vuelo");
+            dialog.setHeaderText("Seleccione el vuelo a eliminar");
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("DeleteFlightDialog.fxml"));
+            dialog.getDialogPane().setContent(loader.load());
+
+            DeleteFlightDialogController controller = loader.getController();
+            controller.setAirports(grafo.getAllAirports());
+            controller.setGraph(grafo); // Pasar la referencia del grafo
+
+            dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+
+            Optional<ButtonType> result = dialog.showAndWait();
+            if (result.isPresent() && result.get() == ButtonType.OK) {
+                Aeropuerto origen = controller.getOrigen();
+                Aeropuerto destino = controller.getDestino();
+                Vuelo vuelo = controller.getVuelo(); // Obtener el vuelo específico
+
+                if (origen == null || destino == null || vuelo == null) {
+                    showAlert("Error", "Seleccione origen, destino y vuelo específico");
+                    return;
+                }
+
+                // Eliminar usando el número de vuelo específico
+                if (grafo.removeFlight(origen, destino, vuelo.getNum_vuelo())) {
+                    // Eliminar del archivo usando el número de vuelo
+                    if (FileManager.removeFlightFromFile(origen, destino, vuelo.getNum_vuelo())) {
+                        outputArea.appendText("✓ Vuelo eliminado: " + origen.getCode() + " → "
+                                + destino.getCode() + " | " + vuelo.getNum_vuelo() + "\n");
+                    } else {
+                        showAlert("Error", "Vuelo eliminado del grafo pero no se pudo eliminar del archivo");
+                    }
+                } else {
+                    showAlert("Error", "No se encontró el vuelo especificado");
                 }
             }
         } catch (IOException e) {
-            outputArea.appendText("⚠️ Error al editar vuelo: " + e.getMessage() + "\n");
+            showAlert("Error", "No se pudo cargar el diálogo: " + e.getMessage());
         }
     }
-    @FXML
-private void handleDeleteFlight() {
-    try {
-        Dialog<ButtonType> dialog = new Dialog<>();
-        dialog.setTitle("Eliminar Vuelo");
-        dialog.setHeaderText("Seleccione el vuelo a eliminar");
-
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("DeleteFlightDialog.fxml"));
-        dialog.getDialogPane().setContent(loader.load());
-
-        DeleteFlightDialogController controller = loader.getController();
-        controller.setAirports(grafo.getAllAirports());
-        controller.setGraph(grafo); // Pasar la referencia del grafo
-
-        dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
-
-        Optional<ButtonType> result = dialog.showAndWait();
-        if (result.isPresent() && result.get() == ButtonType.OK) {
-            Aeropuerto origen = controller.getOrigen();
-            Aeropuerto destino = controller.getDestino();
-            Vuelo vuelo = controller.getVuelo(); // Obtener el vuelo específico
-
-            if (origen == null || destino == null || vuelo == null) {
-                showAlert("Error", "Seleccione origen, destino y vuelo específico");
-                return;
-            }
-
-            // Eliminar usando el número de vuelo específico
-            if (grafo.removeFlight(origen, destino, vuelo.getNum_vuelo())) {
-                // Eliminar del archivo usando el número de vuelo
-                if (FileManager.removeFlightFromFile(origen, destino, vuelo.getNum_vuelo())) {
-                    outputArea.appendText("✓ Vuelo eliminado: " + origen.getCode() + " → " + 
-                            destino.getCode() + " | " + vuelo.getNum_vuelo() + "\n");
-                } else {
-                    showAlert("Error", "Vuelo eliminado del grafo pero no se pudo eliminar del archivo");
-                }
-            } else {
-                showAlert("Error", "No se encontró el vuelo especificado");
-            }
-        }
-    } catch (IOException e) {
-        showAlert("Error", "No se pudo cargar el diálogo: " + e.getMessage());
-    }
-}
 
     //------------------
     @FXML
@@ -855,4 +891,193 @@ private void handleDeleteFlight() {
     private boolean isValidType(Object obj, Class<?> expectedClass) {
         return obj != null && expectedClass.isInstance(obj);
     }
+
+    @FXML
+    private void handleExportTXT() {
+        Aeropuerto origen = origenComboBox.getValue();
+        Aeropuerto destino = destinoComboBox.getValue();
+
+        if (origen == null || destino == null) {
+            showAlert("Error", "Seleccione origen y destino primero");
+            return;
+        }
+
+        try {
+            LinkedList<Aeropuerto> rutaOptima = grafo.findShortestPath(origen, destino);
+            int totalDistance = calcularDistanciaTotal(rutaOptima);
+
+            if (rutaOptima.isEmpty()) {
+                showAlert("Error", "No existe ruta entre estos aeropuertos");
+                return;
+            }
+
+            if (ExportManager.exportRutaToTXT(rutaOptima, totalDistance, origen, destino)) {
+                outputArea.appendText("✓ Ruta exportada a TXT correctamente\n");
+                showAlert("Éxito", "Ruta exportada a archivo TXT");
+            }
+        } catch (Exception e) {
+            showAlert("Error", "No se pudo exportar: " + e.getMessage());
+        }
+    }
+
+    @FXML
+    private void handleExportCSV() {
+        Aeropuerto origen = origenComboBox.getValue();
+        Aeropuerto destino = destinoComboBox.getValue();
+
+        if (origen == null || destino == null) {
+            showAlert("Error", "Seleccione origen y destino primero");
+            return;
+        }
+
+        try {
+            LinkedList<Aeropuerto> rutaOptima = grafo.findShortestPath(origen, destino);
+            int totalDistance = calcularDistanciaTotal(rutaOptima);
+
+            if (rutaOptima.isEmpty()) {
+                showAlert("Error", "No existe ruta entre estos aeropuertos");
+                return;
+            }
+
+            if (ExportManager.exportRutaToCSV(rutaOptima, totalDistance, origen, destino)) {
+                outputArea.appendText("✓ Ruta exportada a CSV correctamente\n");
+                showAlert("Éxito", "Ruta exportada a archivo CSV");
+            } else {
+                showAlert("Error", "No se pudo exportar a CSV");
+            }
+        } catch (Exception e) {
+            showAlert("Error", "No se pudo exportar: " + e.getMessage());
+        }
+    }
+
+    @FXML
+    private void handleExportHTML() {
+        Aeropuerto origen = origenComboBox.getValue();
+        Aeropuerto destino = destinoComboBox.getValue();
+
+        if (origen == null || destino == null) {
+            showAlert("Error", "Seleccione origen y destino primero");
+            return;
+        }
+
+        try {
+            LinkedList<Aeropuerto> rutaOptima = grafo.findShortestPath(origen, destino);
+            int totalDistance = calcularDistanciaTotal(rutaOptima);
+
+            if (rutaOptima.isEmpty()) {
+                showAlert("Error", "No existe ruta entre estos aeropuertos");
+                return;
+            }
+
+            if (ExportManager.exportRutaToHTML(rutaOptima, totalDistance, origen, destino)) {
+                outputArea.appendText("✓ Ruta exportada a HTML correctamente\n");
+                showAlert("Éxito", "Ruta exportada a archivo HTML");
+            } else {
+                showAlert("Error", "No se pudo exportar a HTML");
+            }
+        } catch (Exception e) {
+            showAlert("Error", "No se pudo exportar: " + e.getMessage());
+        }
+    }
+
+    // Métodos similares para handleExportCSV() y handleExportHTML()
+    private int calcularDistanciaTotal(LinkedList<Aeropuerto> ruta) {
+        int total = 0;
+        for (int i = 0; i < ruta.size() - 1; i++) {
+            total += grafo.getDistanceBetween(ruta.get(i), ruta.get(i + 1));
+        }
+        return total;
+    }
+
+    @FXML
+    private void handleAirlineAnalysis() {
+        String selectedAirline = airlineComboBox.getValue();
+
+        if (selectedAirline == null || selectedAirline.isEmpty()) {
+            showAlert("Error", "Seleccione una aerolínea para analizar");
+            return;
+        }
+
+        try {
+            // Crear ventana de análisis
+            Stage analysisStage = new Stage();
+            analysisStage.setTitle("Análisis de Aerolínea: " + selectedAirline);
+
+            VBox root = new VBox(10);
+            root.setPadding(new javafx.geometry.Insets(10));
+
+            Label titleLabel = new Label("Vuelos de " + selectedAirline);
+            titleLabel.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");
+
+            TextArea analysisArea = new TextArea();
+            analysisArea.setEditable(false);
+            analysisArea.setWrapText(true);
+            analysisArea.setPrefSize(600, 400);
+
+            // Obtener y mostrar estadísticas
+            LinkedList<Vuelo> airlineFlights = grafo.getFlightsByAirline(selectedAirline);
+            Map<Aeropuerto, Integer> airportStats = grafo.getAirlineAirportStats(selectedAirline);
+
+            analysisArea.appendText("=== ESTADÍSTICAS DE " + selectedAirline.toUpperCase() + " ===\n\n");
+            analysisArea.appendText("Total de vuelos: " + airlineFlights.size() + "\n");
+            analysisArea.appendText("Aeropuertos que opera: " + airportStats.size() + "\n\n");
+
+            analysisArea.appendText("DISTRIBUCIÓN POR AEROPUERTO:\n");
+            analysisArea.appendText(String.format("%-5s %-30s %-10s\n", "CÓD", "AEROPUERTO", "VUELOS"));
+            analysisArea.appendText("--------------------------------------------\n");
+
+            for (Map.Entry<Aeropuerto, Integer> entry : airportStats.entrySet()) {
+                Aeropuerto airport = entry.getKey();
+                analysisArea.appendText(String.format("%-5s %-30s %-10d\n",
+                        airport.getCode(), airport.getName(), entry.getValue()));
+            }
+
+            analysisArea.appendText("\nDETALLE DE VUELOS:\n");
+            analysisArea.appendText(String.format("%-8s %-5s → %-5s %-12s %-10s\n",
+                    "VUELO", "ORIG", "DEST", "DISTANCIA", "AEROPUERTO DESTINO"));
+            analysisArea.appendText("------------------------------------------------------------\n");
+
+            for (Vuelo vuelo : airlineFlights) {
+                // Necesitarías un método en GraphAL para obtener la ruta del vuelo
+                String routeInfo = grafo.getFlightRouteInfo(vuelo);
+                analysisArea.appendText(String.format("%-8s %s\n",
+                        vuelo.getNum_vuelo(), routeInfo));
+            }
+
+            Button exportButton = new Button("Exportar Reporte");
+            exportButton.setOnAction(e -> {
+                boolean success = ExportManager.exportAirlineReport(selectedAirline, airlineFlights, airportStats);
+                if (success) {
+                    showAlert("Éxito", "Reporte exportado correctamente");
+                }
+            });
+
+            Button closeButton = new Button("Cerrar");
+            closeButton.setOnAction(e -> analysisStage.close());
+
+            HBox buttonBox = new HBox(10, exportButton, closeButton);
+
+            root.getChildren().addAll(titleLabel, analysisArea, buttonBox);
+
+            Scene scene = new Scene(root, 650, 500);
+            analysisStage.setScene(scene);
+            analysisStage.initModality(Modality.WINDOW_MODAL);
+            analysisStage.initOwner(primaryStage);
+            analysisStage.show();
+
+        } catch (Exception e) {
+            showAlert("Error", "No se pudo realizar el análisis: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    private void updateAirlineComboBox() {
+        try {
+            LinkedList<String> airlines = grafo.getAllAirlines();
+            airlineComboBox.getItems().setAll(airlines);
+        } catch (Exception e) {
+            outputArea.appendText("Error al cargar aerolíneas: " + e.getMessage() + "\n");
+        }
+    }
+
 }

@@ -110,15 +110,22 @@ public class FileManager {
                         lines.add(line);
                         continue;
                     }
+
                     String[] parts = line.split(",");
-                    if (parts.length >= 5
-                            && !(parts[0].trim().equals(origen.getCode())
-                            && parts[1].trim().equals(destino.getCode())
-                            && parts[3].trim().equals(numVuelo))) {
-                        lines.add(line);
-                    } else {
-                        found = true;
+                    if (parts.length >= 5) {
+                        String fileOrigen = parts[0].trim();
+                        String fileDestino = parts[1].trim();
+                        String fileNumVuelo = parts[3].trim();
+
+                        // Buscar coincidencia exacta
+                        if (fileOrigen.equals(origen.getCode()) && 
+                            fileDestino.equals(destino.getCode()) && 
+                            fileNumVuelo.equals(numVuelo)) {
+                            found = true;
+                            continue; // Saltar esta línea (eliminarla)
+                        }
                     }
+                    lines.add(line);
                 }
             }
 
@@ -148,5 +155,7 @@ public class FileManager {
         }
         return false;
     }
+    
+    
 
 }

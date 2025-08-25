@@ -95,6 +95,27 @@ public class GraphAL<V, E> {
         return true;
     }
 
+    public boolean updateFlightData(Aeropuerto origen, Aeropuerto destino, String numVueloAntiguo, Vuelo nuevoVuelo) {
+        Vertex<V, E> origenVertex = getVertexForAirport(origen);
+        if (origenVertex == null) {
+            return false;
+        }
+
+        for (Edge<E, V> edge : origenVertex.getEdges()) {
+            Aeropuerto target = (Aeropuerto) edge.getTarget().getContent();
+            if (target.equals(destino)) {
+                Vuelo vuelo = (Vuelo) edge.getData();
+                if (vuelo.getNum_vuelo().equals(numVueloAntiguo)) {
+                    // Actualizar los datos del vuelo
+                    edge.setData((E) nuevoVuelo);
+                    edge.setWeight(nuevoVuelo.getDistance().intValue());
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     public boolean connectComplete(V source, V target, int weight, E data) {
         if (source == null || target == null) {
             return false;
@@ -410,6 +431,81 @@ public class GraphAL<V, E> {
             }
         }
         return vuelos;
+    }
+
+    public LinkedList<String> getAllAirlines() {
+        LinkedList<String> airlines = new LinkedList<>();
+        for (Vertex<V, E> vertex : vertices) {
+            for (Edge<E, V> edge : vertex.getEdges()) {
+                Vuelo vuelo = (Vuelo) edge.getData();
+                if (vuelo != null && !airlines.contains(vuelo.getAirline())) {
+                    airlines.add(vuelo.getAirline());
+                }
+            }
+        }
+        return airlines;
+    }
+
+    public LinkedList<Vuelo> getFlightsByAirline(String airline) {
+        LinkedList<Vuelo> airlineFlights = new LinkedList<>();
+        for (Vertex<V, E> vertex : vertices) {
+            for (Edge<E, V> edge : vertex.getEdges()) {
+                Vuelo vuelo = (Vuelo) edge.getData();
+                if (vuelo != null && vuelo.getAirline().equalsIgnoreCase(airline)) {
+                    airlineFlights.add(vuelo);
+                }
+            }
+        }
+        return airlineFlights;
+    }
+
+    public Map<Aeropuerto, Integer> getAirlineAirportStats(String airline) {
+        Map<Aeropuerto, Integer> stats = new HashMap<>();
+        for (Vertex<V, E> vertex : vertices) {
+            Aeropuerto airport = (Aeropuerto) vertex.getContent();
+            int count = 0;
+
+            // Contar vuelos de salida de esta aerolínea
+            for (Edge<E, V> edge : vertex.getEdges()) {
+                Vuelo vuelo = (Vuelo) edge.getData();
+                if (vuelo != null && vuelo.getAirline().equalsIgnoreCase(airline)) {
+                    count++;
+                }
+            }
+
+            // Contar vuelos de llegada de esta aerolínea
+            for (Vertex<V, E> otherVertex : vertices) {
+                for (Edge<E, V> edge : otherVertex.getEdges()) {
+                    Vuelo vuelo = (Vuelo) edge.getData();
+                    Aeropuerto target = (Aeropuerto) edge.getTarget().getContent();
+                    if (vuelo != null && vuelo.getAirline().equalsIgnoreCase(airline)
+                            && target.equals(airport)) {
+                        count++;
+                    }
+                }
+            }
+
+            if (count > 0) {
+                stats.put(airport, count);
+            }
+        }
+        return stats;
+    }
+
+    public String getFlightRouteInfo(Vuelo vuelo) {
+        for (Vertex<V, E> vertex : vertices) {
+            for (Edge<E, V> edge : vertex.getEdges()) {
+                Vuelo currentVuelo = (Vuelo) edge.getData();
+                if (currentVuelo != null && currentVuelo.equals(vuelo)) {
+                    Aeropuerto origen = (Aeropuerto) vertex.getContent();
+                    Aeropuerto destino = (Aeropuerto) edge.getTarget().getContent();
+                    return String.format("%-5s → %-5s %-12.0fkm %-30s",
+                            origen.getCode(), destino.getCode(),
+                            vuelo.getDistance(), destino.getName());
+                }
+            }
+        }
+        return "Información no disponible";
     }
 
 }
