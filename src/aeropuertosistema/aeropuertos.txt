@@ -1,4 +1,5 @@
 codigo,nombre,ciudad,pais
+PKX,Aeropuerto Internacional de Beijing Daxing,Beijing,China
 PEK,Aeropuerto Internacional de Beijing Capital,Beijing,China
 PVG,Aeropuerto Internacional de Shanghai Pudong,Shanghai,China
 CAN,Aeropuerto Internacional de Guangzhou Baiyun,Guangzhou,China
@@ -10,3 +11,14 @@ TAO,Aeropuerto Internacional de Qingdao Jiaodong,Qingdao,China
 CKG,Aeropuerto Internacional de Chongqing Jiangbei,Chongqing,China
 NNG,Aeropuerto Internacional de Nanning Wuxu,Nanning,China
 HAK,Aeropuerto Internacional de Haikou Meilan,Haikou,China
+HKG,Aeropuerto Internacional de Hong Kong,Hong Kong,China
+ICN,Aeropuerto Internacional de Incheon,Seoul,Corea del Sur
+NRT,Aeropuerto Internacional de Narita,Tokyo,Japon
+SIN,Aeropuerto Internacional de Changi,Singapur,Singapur
+BKK,Aeropuerto Internacional Suvarnabhumi,Bangkok,Tailandia
+KUL,Aeropuerto Internacional de Kuala Lumpur,Kuala Lumpur,Malasia
+DEL,Aeropuerto Internacional Indira Gandhi,Delhi,India
+DXB,Aeropuerto Internacional de Dubai,Dubai,Emiratos Arabes Unidos
+GYQ,SIMON BOLIVAR,GUAYQUIL,ECUADOR
+
+QUT,AEROPUERTO DE QUITO,QUITO,ECUADOR

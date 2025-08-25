@@ -43,6 +43,11 @@ public class Vuelo {
     public void setDistance(Float distance) {
         this.distance = distance;
     }
+
+    @Override
+    public String toString() {
+        return num_vuelo;
+    }
     
     
 

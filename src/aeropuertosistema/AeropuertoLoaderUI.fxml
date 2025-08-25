@@ -2,15 +2,15 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextArea?>
-<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox fx:id="root" spacing="10.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="aeropuertosistema.AeropuertoLoaderController">
+<VBox fx:id="root" spacing="10.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="aeropuertosistema.AeropuertoLoaderController">
     <padding>
         <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
     </padding>
@@ -18,54 +18,82 @@
         -fx-background-color: #f4f4f4;
     </style>
    
-    <Label text="Sistema de Gestión de Aeropuertos - Aeropuerto Daxing" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;">
+    <Label style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" text="Sistema de Gestión de Aeropuertos - Aeropuerto Daxing">
         <font>
             <Font name="System Bold" size="18.0" />
         </font>
     </Label>
    
-    <Label text="Seleccione un archivo TXT con datos de aeropuertos. El formato debe ser: código,nombre,ciudad,país" wrapText="true" style="-fx-text-fill: #7f8c8d;">
+    <Label style="-fx-font-weight: bold;" text="Información de Aeropuertos:">
         <VBox.margin>
-            <Insets bottom="10.0" />
+            <Insets top="15.0" />
         </VBox.margin>
     </Label>
-   
     <HBox spacing="10.0">
-        <Button fx:id="loadButton" mnemonicParsing="false" text="Cargar Aeropuertos desde Archivo" style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-weight: bold;" />
-        <Button fx:id="displayButton" mnemonicParsing="false" text="Mostrar Aeropuertos Cargados" style="-fx-background-color: #2ecc71; -fx-text-fill: white; -fx-font-weight: bold;" disable="true" />
-        <Button fx:id="clearButton" mnemonicParsing="false" text="Limpiar" style="-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-font-weight: bold;" />
+        <Button fx:id="loadButton" mnemonicParsing="false" style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-weight: bold;" text="Cargar Aeropuertos desde Archivo" />
+        <Button fx:id="displayButton" disable="true" mnemonicParsing="false" style="-fx-background-color: #2ecc71; -fx-text-fill: white; -fx-font-weight: bold;" text="Mostrar Aeropuertos Cargados" />
+        <Button fx:id="clearButton" mnemonicParsing="false" style="-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-font-weight: bold;" text="Limpiar" />
     </HBox>
-   
-    <Label text="Visualización del Grafo de Vuelos:" style="-fx-font-weight: bold;">
-        <VBox.margin>
-            <Insets top="20.0" />
-        </VBox.margin>
-    </Label>
-   
-    <BorderPane fx:id="graphContainer" prefHeight="400.0" prefWidth="600.0">
-        <padding>
-            <Insets top="10.0" />
-        </padding>
-    </BorderPane>
-   
-    <Label text="Información de Aeropuertos:" style="-fx-font-weight: bold;">
+    
+    <Label style="-fx-font-weight: bold;" text="Información de Vuelos:">
         <VBox.margin>
             <Insets top="15.0" />
         </VBox.margin>
     </Label>
     <!-- NUEVA SECCIÓN PARA BOTONES DE VUELOS -->
     <HBox spacing="10.0">
-        <Button fx:id="loadVuelosButton" mnemonicParsing="false" text="Cargar Vuelos desde Archivo" style="-fx-background-color: #9b59b6; -fx-text-fill: white; -fx-font-weight: bold;" disable="true" />
-        <Button fx:id="displayVuelosButton" mnemonicParsing="false" text="Mostrar Vuelos y Conexiones" style="-fx-background-color: #f39c12; -fx-text-fill: white; -fx-font-weight: bold;" disable="true" />
-        <Button fx:id="estadisticasButton" mnemonicParsing="false" text="Ver Estadísticas" style="-fx-background-color: #16a085; -fx-text-fill: white; -fx-font-weight: bold;" disable="true" />
-        <Button fx:id="viewGraphButton" mnemonicParsing="false" 
-                text="Visualización Completa del Grafo" 
-                style="-fx-background-color: #9c27b0; -fx-text-fill: white; -fx-font-weight: bold;"
-                onAction="#handleViewGraph"/>
+        <Button fx:id="loadVuelosButton" disable="true" mnemonicParsing="false" style="-fx-background-color: #9b59b6; -fx-text-fill: white; -fx-font-weight: bold;" text="Cargar Vuelos desde Archivo" />
+        <Button fx:id="displayVuelosButton" disable="true" mnemonicParsing="false" style="-fx-background-color: #f39c12; -fx-text-fill: white; -fx-font-weight: bold;" text="Mostrar Vuelos y Conexiones" />
+        <Button fx:id="estadisticasButton" disable="true" mnemonicParsing="false" style="-fx-background-color: #16a085; -fx-text-fill: white; -fx-font-weight: bold;" text="Ver Estadísticas" />
+        <Button fx:id="viewGraphButton" mnemonicParsing="false" onAction="#handleViewGraph" style="-fx-background-color: #9c27b0; -fx-text-fill: white; -fx-font-weight: bold;" text="Visualización Completa del Grafo" />
     </HBox>
-    
+
+    <!-- Sección para Gestión de Aeropuertos -->
+    <Label style="-fx-font-weight: bold;" text="Gestión de Aeropuertos:">
+        <VBox.margin>
+            <Insets top="20.0" />
+        </VBox.margin>
+    </Label>
+
+    <HBox spacing="10.0">
+        <Button fx:id="addAirportButton" style="-fx-background-color: #27ae60; -fx-text-fill: white; -fx-font-weight: bold;" text="Añadir Aeropuerto" />
+        <Button fx:id="deleteAirportButton" style="-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-font-weight: bold;" text="Eliminar Aeropuerto" />
+    </HBox>
+
+    <!-- NUEVO: ComboBox para seleccionar aeropuerto a eliminar -->
+    <HBox spacing="10.0" alignment="CENTER_LEFT">
+        <Label text="Seleccionar aeropuerto:" style="-fx-font-weight: bold;"/>
+        <ComboBox fx:id="deleteAirportComboBox" prefWidth="250" promptText="Seleccione aeropuerto a eliminar" />
+    </HBox>
+
+    <!-- Sección para Gestión de Vuelos -->
+    <Label style="-fx-font-weight: bold;" text="Gestión de Vuelos:">
+        <VBox.margin>
+            <Insets top="20.0" />
+        </VBox.margin>
+    </Label>
+
+    <HBox spacing="10.0">
+        <Button fx:id="addFlightButton" style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-weight: bold;" text="Añadir Vuelo" />
+        <Button fx:id="editFlightButton" style="-fx-background-color: #f39c12; -fx-text-fill: white; -fx-font-weight: bold;" text="Editar Vuelo" />
+        <Button fx:id="deleteFlightButton" style="-fx-background-color: #c0392b; -fx-text-fill: white; -fx-font-weight: bold;" text="Eliminar Vuelo" />
+    </HBox>
+
+    <!-- Sección para Búsqueda de Rutas -->
+    <Label style="-fx-font-weight: bold;" text="Búsqueda de Rutas Óptimas:">
+        <VBox.margin>
+            <Insets top="20.0" />
+        </VBox.margin>
+    </Label>
+
+    <HBox spacing="10.0">
+        <ComboBox fx:id="origenComboBox" prefWidth="200" promptText="Aeropuerto origen" />
+        <ComboBox fx:id="destinoComboBox" prefWidth="200" promptText="Aeropuerto destino" />
+        <Button fx:id="buscarRutaButton" style="-fx-background-color: #2980b9; -fx-text-fill: white; -fx-font-weight: bold;" text="Buscar Ruta Óptima" />
+    </HBox>
    
-    <Label text="Información de Aeropuertos:" style="-fx-font-weight: bold;">
+    <!-- Área de salida -->
+    <Label style="-fx-font-weight: bold;" text="Información del Sistema:">
         <VBox.margin>
             <Insets top="15.0" />
         </VBox.margin>
@@ -75,7 +103,7 @@
         <TextArea fx:id="outputArea" editable="false" prefHeight="400.0" style="-fx-font-family: 'Monospaced'; -fx-font-size: 12px;" />
     </ScrollPane>
    
-    <Label fx:id="statusLabel" text="Listo para cargar datos" style="-fx-text-fill: #27ae60;">
+    <Label fx:id="statusLabel" style="-fx-text-fill: #27ae60;" text="Listo para cargar datos">
         <VBox.margin>
             <Insets top="10.0" />
         </VBox.margin>

@@ -49,6 +49,11 @@ public class Aeropuerto {
         this.code = code;
     }
 
+    @Override
+    public String toString() {
+        return name;
+    }
+    
     public Aeropuerto(String name, String city, String country, String code) {
         this.name = name;
         this.city = city;

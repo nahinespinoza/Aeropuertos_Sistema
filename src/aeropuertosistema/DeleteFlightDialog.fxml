@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<DialogPane xmlns="http://javafx.com/javafx/11.0.1" 
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="aeropuertosistema.DeleteFlightDialogController">
+    
+    <headerText>
+        Eliminar Vuelo
+    </headerText>
+    
+    <content>
+        <GridPane hgap="10" vgap="10">
+            <padding>
+                <Insets top="10" right="10" bottom="10" left="10"/>
+            </padding>
+            
+            <Label text="Aeropuerto Origen:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+            <ComboBox fx:id="origenCombo" GridPane.columnIndex="1" GridPane.rowIndex="0"
+                      onAction="#onOrigenSelected"/>
+            
+            <Label text="Aeropuerto Destino:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+            <ComboBox fx:id="destinoCombo" GridPane.columnIndex="1" GridPane.rowIndex="1"
+                      onAction="#onDestinoSelected"/>
+            
+            <Label text="Vuelo:" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+            <ComboBox fx:id="vueloCombo" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+        </GridPane>
+    </content>
+</DialogPane>
