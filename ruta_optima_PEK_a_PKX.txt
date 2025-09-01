@@ -1,0 +1,17 @@
+=== RUTA ÓPTIMA EXPORTADA ===
+Fecha: 2025-08-31 19:49:14
+Origen: PEK - Aeropuerto Internacional de Beijing Capital
+Destino: PKX - Aeropuerto Internacional de Beijing Daxing
+Distancia total: 2546 km
+
+DETALLE DE LA RUTA:
+===================
+1. PEK - Aeropuerto Internacional de Beijing Capital (Beijing, China)
+   ↓ Vuelo hacia próximo aeropuerto
+2. PVG - Aeropuerto Internacional de Shanghai Pudong (Shanghai, China)
+   ↓ Vuelo hacia próximo aeropuerto
+3. HKG - Aeropuerto Internacional de Hong Kong (Hong Kong, China)
+   ↓ Vuelo hacia próximo aeropuerto
+4. PKX - Aeropuerto Internacional de Beijing Daxing (Beijing, China)
+
+=== FIN DEL REPORTE ===

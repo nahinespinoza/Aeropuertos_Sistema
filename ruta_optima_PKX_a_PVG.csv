@@ -1,0 +1,10 @@
+Numero,Aeropuerto,Codigo,Ciudad,Pais
+1,Aeropuerto Internacional de Beijing Daxing,PKX,Beijing,China
+2,Aeropuerto Internacional de Shanghai Pudong,PVG,Shanghai,China
+
+Resumen
+Origen,PKX
+Destino,PVG
+Distancia Total (km),1176
+Total Aeropuertos,2
+Fecha Exportacion,2025-08-31 20:12:20

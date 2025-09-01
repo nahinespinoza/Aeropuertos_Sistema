@@ -1,0 +1,12 @@
+Numero,Aeropuerto,Codigo,Ciudad,Pais
+1,Aeropuerto Internacional de Beijing Capital,PEK,Beijing,China
+2,Aeropuerto Internacional de Shanghai Pudong,PVG,Shanghai,China
+3,Aeropuerto Internacional de Hong Kong,HKG,Hong Kong,China
+4,Aeropuerto Internacional de Beijing Daxing,PKX,Beijing,China
+
+Resumen
+Origen,PEK
+Destino,PKX
+Distancia Total (km),2546
+Total Aeropuertos,4
+Fecha Exportacion,2025-08-31 19:49:14
