@@ -1,5 +1,5 @@
 === RUTA ÓPTIMA EXPORTADA ===
-Fecha: 2025-08-31 20:12:20
+Fecha: 2025-09-01 11:45:05
 Origen: PKX - Aeropuerto Internacional de Beijing Daxing
 Destino: PVG - Aeropuerto Internacional de Shanghai Pudong
 Distancia total: 1176 km

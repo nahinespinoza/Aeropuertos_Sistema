@@ -508,4 +508,19 @@ public class GraphAL<V, E> {
         return "Información no disponible";
     }
 
+    public int getInDegree(Aeropuerto aeropuerto) {
+
+        int cont = 0;
+        for (Vertex<V, E> vertex : vertices) {
+            for (Edge<E, V> edge : vertex.getEdges()) {
+                if (cmp.compare(edge.getTarget().getContent(), (V) aeropuerto) == 0) {
+                    cont = cont + 1;
+                }
+
+            }
+
+        }
+
+        return cont;
+    }
 }

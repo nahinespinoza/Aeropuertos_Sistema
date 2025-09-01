@@ -40,14 +40,12 @@
             
             <Label text="Vuelo:" 
                    GridPane.columnIndex="0" 
-                   GridPane.rowIndex="2" 
-                   visible="${origenCombo.value != null and destinoCombo.value != null}"/>
+                   GridPane.rowIndex="2"/>
             
             <ComboBox fx:id="vueloCombo" 
                       promptText="Seleccione vuelo" 
                       GridPane.columnIndex="1" 
-                      GridPane.rowIndex="2"
-                      visible="${origenCombo.value != null and destinoCombo.value != null}"/>
+                      GridPane.rowIndex="2"/>
         </GridPane>
     </content>
 </DialogPane>

@@ -22,3 +22,5 @@ DXB,Aeropuerto Internacional de Dubai,Dubai,Emiratos Arabes Unidos
 GYQ,SIMON BOLIVAR,GUAYQUIL,ECUADOR
 
 
+
+uio,Aeropuerto de Quito,Quito,Ecuador

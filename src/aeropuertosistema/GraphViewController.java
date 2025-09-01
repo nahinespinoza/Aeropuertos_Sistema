@@ -17,62 +17,64 @@ import javafx.scene.text.Text;
 import javafx.scene.paint.Color;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.Pane;
 
 public class GraphViewController implements Initializable {
 
     @FXML
     private BorderPane graphContainer;
-    
+
     @FXML
     private Button refreshButton;
-    
+
     @FXML
     private Button closeButton;
-    
+
     private Pane graphPane;
     private GraphAL<Aeropuerto, Vuelo> grafo;
     private Map<Aeropuerto, Circle> nodeCircles;
     private Map<Aeropuerto, Text> nodeLabels;
     private Map<String, Line> edges;
     private LinkedList<Aeropuerto> currentPath; // Para almacenar la ruta actual
-    
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         graphPane = new Pane();
         graphPane.setPrefSize(1000, 700);
         graphPane.setStyle("-fx-background-color: #f0f8ff;");
-        
+
         nodeCircles = new HashMap<>();
         nodeLabels = new HashMap<>();
         edges = new HashMap<>();
         currentPath = new LinkedList<>();
-        
+
         graphContainer.setCenter(graphPane);
-        
+
         refreshButton.setOnAction(e -> {
             drawGraph();
             if (!currentPath.isEmpty()) {
                 highlightPath(currentPath);
             }
         });
-        
+
         closeButton.setOnAction(e -> closeWindow());
     }
-    
+
     public void setGrafo(GraphAL<Aeropuerto, Vuelo> grafo) {
         this.grafo = grafo;
         drawGraph();
     }
-    
+
     // Método para establecer y resaltar una ruta
     public void setAndHighlightPath(LinkedList<Aeropuerto> path) {
         this.currentPath = path;
         drawGraph(); // Redibujar todo
         highlightPath(path); // Resaltar la ruta
     }
-    
+
     private void drawGraph() {
         graphPane.getChildren().clear();
         nodeCircles.clear();
@@ -117,7 +119,7 @@ public class GraphViewController implements Initializable {
             int x = (int) (centerX + radius * Math.cos(angle));
             int y = (int) (centerY + radius * Math.sin(angle));
 
-            drawNode(aeropuerto, x, y, vertex.getEdges().size());
+            drawNode(aeropuerto, x, y);
             i++;
         }
     }
@@ -133,15 +135,33 @@ public class GraphViewController implements Initializable {
         return -1;
     }
 
-    private void drawNode(Aeropuerto aeropuerto, int x, int y, int connectionCount) {
+
+    private void drawNode(Aeropuerto aeropuerto, int x, int y) {
         Circle circle = new Circle(x, y, 20);
 
-        // Color basado en número de conexiones
-        if (connectionCount > 8) {
+        // Obtener conexiones entrantes y salientes
+        Vertex<Aeropuerto, Vuelo> vertex = null;
+        for (Vertex<Aeropuerto, Vuelo> v : grafo.getVertices()) {
+            if (v.getContent().equals(aeropuerto)) {
+                vertex = v;
+                break;
+            }
+        }
+
+        if (vertex == null) {
+            return;
+        }
+
+        int outConnections = vertex.getEdges().size(); // Conexiones salientes
+        int inConnections = grafo.getInDegree(aeropuerto); // Conexiones entrantes
+        int totalConnections = outConnections + inConnections;
+
+        // Color basado en el número total de conexiones
+        if (totalConnections > 8) {
             circle.setFill(Color.RED);
-        } else if (connectionCount > 5) {
+        } else if (totalConnections > 5) {
             circle.setFill(Color.ORANGE);
-        } else if (connectionCount > 3) {
+        } else if (totalConnections > 3) {
             circle.setFill(Color.YELLOW);
         } else {
             circle.setFill(Color.LIGHTGREEN);
@@ -153,13 +173,16 @@ public class GraphViewController implements Initializable {
         Text label = new Text(x - 10, y + 5, aeropuerto.getCode());
         label.setStyle("-fx-font-weight: bold; -fx-font-size: 12px;");
 
-        // Tooltip
-        String tooltipText = String.format("%s\n%s\n%d conexiones",
-                aeropuerto.getCode(), aeropuerto.getName(), connectionCount);
-        javafx.scene.control.Tooltip.install(circle,
-                new javafx.scene.control.Tooltip(tooltipText));
-        javafx.scene.control.Tooltip.install(label,
-                new javafx.scene.control.Tooltip(tooltipText));
+        // Texto de los Nodos 
+        String tooltipText = String.format("%s - %s\nConexiones: %d entrantes, %d salientes\nTotal: %d conexiones",
+                aeropuerto.getCode(),
+                aeropuerto.getName(),
+                inConnections,
+                outConnections,
+                totalConnections);
+
+        Tooltip.install(circle, new Tooltip(tooltipText));
+        Tooltip.install(label, new Tooltip(tooltipText));
 
         graphPane.getChildren().addAll(circle, label);
         nodeCircles.put(aeropuerto, circle);
@@ -230,7 +253,7 @@ public class GraphViewController implements Initializable {
                 nodeCircles.get(aeropuerto).setFill(Color.BLUE);
                 nodeCircles.get(aeropuerto).setStroke(Color.DARKBLUE);
                 nodeCircles.get(aeropuerto).setStrokeWidth(3);
-                
+
                 // También resaltar el texto
                 if (nodeLabels.containsKey(aeropuerto)) {
                     nodeLabels.get(aeropuerto).setFill(Color.WHITE);
@@ -256,7 +279,7 @@ public class GraphViewController implements Initializable {
             }
         }
     }
-    
+
     private void closeWindow() {
         Stage stage = (Stage) closeButton.getScene().getWindow();
         stage.close();
